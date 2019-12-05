@@ -1741,7 +1741,8 @@ static int qpnp_flash_led_parse_each_led_dt(struct qpnp_flash_led *led,
        #ifdef CONFIG_KERNEL_CUSTOM_F7A
 	if (fnode->type == FLASH_LED_TYPE_TORCH)
 	{
- 		  fnode->cdev.flags |= LED_KEEP_TRIGGER;
+
+ 		  fnode->cdev.flags |= LED_KEEP_TRIGGER;
 	}
 	#endif
 	rc = led_classdev_register(&led->pdev->dev, &fnode->cdev);
