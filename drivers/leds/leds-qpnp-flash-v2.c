@@ -1265,7 +1265,7 @@ static int qpnp_flash_led_switch_set(struct flash_switch_data *snode, bool on)
 	return 0;
 }
 
-int qpnp_flash_led_prepare(struct led_trigger *trig, int options,
+static int qpnp_flash_led_prepare_v2(struct led_trigger *trig, int options,
 					int *max_current)
 {
 	struct led_classdev *led_cdev;
@@ -1741,7 +1741,8 @@ static int qpnp_flash_led_parse_each_led_dt(struct qpnp_flash_led *led,
        #ifdef CONFIG_KERNEL_CUSTOM_F7A
 	if (fnode->type == FLASH_LED_TYPE_TORCH)
 	{
- 		  fnode->cdev.flags |= LED_KEEP_TRIGGER;
+
+ 		  fnode->cdev.flags |= LED_KEEP_TRIGGER;
 	}
 	#endif
 	rc = led_classdev_register(&led->pdev->dev, &fnode->cdev);
@@ -2413,6 +2414,7 @@ static int qpnp_flash_led_probe(struct platform_device *pdev)
 	if (!led->pdata)
 		return -ENOMEM;
 
+	qpnp_flash_led_prepare = qpnp_flash_led_prepare_v2;
 	rc = qpnp_flash_led_parse_common_dt(led, node);
 	if (rc < 0) {
 		pr_err("Failed to parse common flash LED device tree\n");
